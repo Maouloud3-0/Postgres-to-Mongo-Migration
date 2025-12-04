@@ -24,11 +24,101 @@ Le travail consiste à modéliser, convertir et automatiser l’ingestion de don
 ---
 
 ## 🗂 Organisation du dépôt
+🧱 Structure relationnelle de départ (PostgreSQL)
 
-```text
-.
-├── Data/            # Modélisations document MongoDB (schemas, JSON examples)
-├── Code/            # Scripts de conversion PostgreSQL → JSON → MongoDB
-├── Interface_mission5.exe/             # Script Python pour ingestion automatique (pagila2..pagila5)
-├── Reports/         # Rapport, explications et analyses
-└── README.md        # Documentation générale du projet
+Les bases pagila1…pagila5 sont créées à partir du schéma suivant :
+(extrait du sujet officiel) 
+
+FILM
+Attribut	Description
+film_id	identifiant du film
+title	titre
+description	résumé
+language_id	langue principale
+original_language_id	langue originale
+ACTOR
+Attribut	Description
+actor_id	identifiant
+first_name	prénom
+last_name	nom
+FILM_ACTOR
+
+Relation n-n entre films et acteurs.
+
+🗃️ Modélisation orientée document (MongoDB)
+
+Exemples de modèles possibles :
+
+Modèle 1 – Film centré :
+{
+  "film_id": 1,
+  "title": "Example",
+  "description": "Résumé...",
+  "actors": [
+    { "actor_id": 10, "first_name": "John", "last_name": "Doe" }
+  ],
+  "language": { "id": 1, "name": "English" }
+}
+
+Modèle 2 – Acteur centré :
+{
+  "actor_id": 10,
+  "name": "John Doe",
+  "films": [
+    { "film_id": 1, "title": "Example" }
+  ]
+}
+
+⚙️ Flux de conversion et migration (pipeline)
+
+Export PostgreSQL → JSON
+
+Nettoyage, structuration et transformation des documents
+
+Injection dans MongoDB
+
+via commandes Mongo
+
+via script Python
+
+Automatisation (ETL Python)
+
+Parcours de pagila2 → pagila5
+
+Détection automatique de nouvelles bases
+
+Conversion + insertion en masse
+
+🖥️ Interface Graphique (GUI)
+
+Création d’un nouveau document film / acteur
+
+Génération automatique du JSON valide
+
+Insertion directe dans MongoDB
+
+Vérification et affichage de confirmation
+
+🛠 Technologies utilisées
+
+PostgreSQL
+
+MongoDB
+
+Python (pymongo, psycopg2, tkinter, json)
+
+Commandes Mongo / Postgres
+
+JSON normalisé
+
+📄 Livrables
+
+Modélisations document
+
+Scripts SQL
+
+Scripts Python (conversion, ETL, GUI)
+
+Base MongoDB finale
+
+Rapport
